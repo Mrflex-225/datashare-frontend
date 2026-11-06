@@ -1,0 +1,8 @@
+<header class="header">
+  <a class="logo" routerLink="/">DataShare</a>
+  @if (auth.isAuthenticated()) {
+    <a class="btn-login" routerLink="/history">Mon espace</a>
+  } @else {
+    <a class="btn-login" routerLink="/login">Se connecter</a>
+  }
+</header>

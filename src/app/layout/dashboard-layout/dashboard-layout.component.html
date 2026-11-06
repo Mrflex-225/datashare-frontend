@@ -1,0 +1,49 @@
+<div class="dashboard-layout">
+  <aside class="sidebar" [class.open]="menuOpen()">
+    <div class="sidebar-top">
+      <button type="button" class="close-menu" aria-label="Fermer le menu" (click)="menuOpen.set(false)">✕</button>
+      <a routerLink="/" class="brand">DataShare</a>
+    </div>
+
+    <nav class="sidebar-nav">
+      <a routerLink="/history" routerLinkActive="active" class="sidebar-link" (click)="menuOpen.set(false)">
+        Mes fichiers
+      </a>
+      <a routerLink="/upload" class="sidebar-link mobile-only">Ajouter des fichiers</a>
+      <button type="button" class="sidebar-link mobile-only" (click)="logout()">Déconnexion</button>
+    </nav>
+
+    <span class="copyright">Copyright DataShare® 2026</span>
+  </aside>
+
+  @if (menuOpen()) {
+    <div class="overlay" (click)="menuOpen.set(false)"></div>
+  }
+
+  <header class="topbar">
+    <button type="button" class="burger" aria-label="Ouvrir le menu" (click)="menuOpen.set(true)">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+           stroke-linecap="round" aria-hidden="true">
+        <path d="M3 6h18M3 12h18M3 18h18" />
+      </svg>
+    </button>
+    <span class="user-email">{{ userEmail }}</span>
+
+    <nav class="topbar-actions">
+      <a routerLink="/upload" class="add-button">Ajouter des fichiers</a>
+      <button type="button" class="logout-button" (click)="logout()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+             stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+          <path d="M16 17l5-5-5-5" />
+          <path d="M21 12H9" />
+        </svg>
+        Déconnexion
+      </button>
+    </nav>
+  </header>
+
+  <main class="content">
+    <router-outlet />
+  </main>
+</div>

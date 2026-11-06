@@ -1,0 +1,105 @@
+<input #fileInput type="file" class="file-input" aria-label="Fichier à partager" (change)="onFileSelected($event)" />
+
+@if (selectedFile(); as file) {
+  <div class="upload-card">
+    <h2>Ajouter un fichier</h2>
+
+    <div class="selected-file">
+      <svg class="file-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+           stroke-width="2" aria-hidden="true">
+        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+        <path d="M14 2v6h6" />
+      </svg>
+      <div class="file-info">
+        <span class="file-name">{{ file.name }}</span>
+        <small class="file-size" [class.too-large]="tooLarge()">{{ formatFileSize(file.size) }}</small>
+      </div>
+      <button type="button" class="change-btn" [disabled]="uploading()" (click)="fileInput.click()">
+        Changer
+      </button>
+    </div>
+
+    @if (tooLarge()) {
+      <p class="size-error" role="alert">La taille des fichiers est limitée à 1 Go</p>
+    }
+
+    <div class="form-group">
+      <label for="password">Mot de passe</label>
+      <input id="password" type="password" placeholder="Optionnel" autocomplete="new-password"
+             [value]="password()" (input)="password.set($any($event.target).value)"
+             [disabled]="uploading()" />
+    </div>
+
+    <div class="form-group">
+      <label for="expiration">Expiration</label>
+      <select id="expiration" [disabled]="uploading()" (change)="expiration.set(+$any($event.target).value)">
+        @for (option of expirationOptions; track option.days) {
+          <option [value]="option.days" [selected]="option.days === expiration()">{{ option.label }}</option>
+        }
+      </select>
+    </div>
+
+    @if (errorMessage()) {
+      <p class="status status--error" role="alert">{{ errorMessage() }}</p>
+    }
+
+    <button type="button" class="submit-btn" [disabled]="uploading() || tooLarge()" (click)="uploadFile()">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+           stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M16 16l-4-4-4 4" />
+        <path d="M12 12v9" />
+        <path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3" />
+      </svg>
+      {{ uploading() ? 'Téléversement...' : 'Téléverser' }}
+    </button>
+  </div>
+} @else if (uploaded()) {
+  @let result = uploaded()!;
+  <div class="upload-card">
+    <h2>Ajouter un fichier</h2>
+
+    <div class="selected-file">
+      <svg class="file-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+           stroke-width="2" aria-hidden="true">
+        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+        <path d="M14 2v6h6" />
+      </svg>
+      <div class="file-info">
+        <span class="file-name">{{ result.originalName }}</span>
+        <small class="file-size">{{ formatFileSize(result.size) }}</small>
+      </div>
+    </div>
+
+    <p class="success-message">
+      Félicitations, ton fichier sera conservé chez nous {{ getExpirationText(result.expirationDate) }} !
+    </p>
+
+    <div class="link-container">
+      <input #linkInput id="downloadLink" type="text" readonly aria-label="Lien de partage"
+             [value]="getDownloadLink(result.downloadToken)" />
+      <button type="button" class="copy-btn" (click)="copyLink(linkInput.value)">
+        {{ linkCopied() ? 'Copié' : 'Copier' }}
+      </button>
+    </div>
+
+    @if (errorMessage()) {
+      <p class="status status--error" role="alert">{{ errorMessage() }}</p>
+    }
+
+    <button type="button" class="submit-btn" (click)="uploaded.set(null)">Ajouter un autre fichier</button>
+  </div>
+} @else {
+  <section class="hero">
+    <h1>Tu veux partager un fichier ?</h1>
+    <button type="button" class="upload-btn" aria-label="Choisir un fichier" (click)="fileInput.click()">
+      <span class="upload-btn__inner">
+        <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+             stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M16 16l-4-4-4 4" />
+          <path d="M12 12v9" />
+          <path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3" />
+        </svg>
+      </span>
+    </button>
+  </section>
+}
