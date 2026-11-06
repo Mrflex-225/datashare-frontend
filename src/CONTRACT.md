@@ -2,7 +2,7 @@
 
 ## 1. Authentification & Sécurité
 
-### POST `/api/auth/login`
+### POST `/api/login`
 
 Permet à un utilisateur de s'authentifier afin d'obtenir un jeton JWT.
 
@@ -43,7 +43,7 @@ Identifiants incorrects.
 
 ---
 
-### POST `/api/auth/register`
+### POST `/api/register`
 
 Permet à un utilisateur de créer un compte.
 

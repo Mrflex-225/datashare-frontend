@@ -97,7 +97,7 @@ h1 {
   padding: 4px 8px;
   font: inherit;
   font-size: 0.75rem;
-  color: var(--ds-accent);
+  color: #000000;
   background: #fff;
   border: 1px solid var(--ds-accent-border);
   border-radius: 6px;
@@ -131,7 +131,7 @@ h1 {
   display: flex;
   flex-direction: column;
   min-width: 120px;
-  background: #fff;
+  background: #a10c0c;
   border: 1px solid #f3d6c9;
   border-radius: 8px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
@@ -144,7 +144,7 @@ h1 {
     background: none;
     border: none;
     cursor: pointer;
-
+    
     &:hover {
       background: var(--ds-accent-soft);
     }
